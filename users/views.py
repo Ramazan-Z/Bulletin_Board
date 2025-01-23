@@ -124,13 +124,13 @@ class VerifyEmail(generics.GenericAPIView):
             )
         ],
     )
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         """Подтветждение электронной почты по прямой ссылке."""
         token = request.GET.get("token")
         return self.email_activate(token)
 
     @extend_schema(operation_id="Verify email (post)")
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         """Подтветждение электронной почты через POST запрос."""
         token = request.data.get("token")
         return self.email_activate(token)
@@ -166,7 +166,7 @@ class ResetPassword(generics.GenericAPIView):
     permission_classes = [AllowAny]
 
     @extend_schema(operation_id="Reset password")
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         """Отправляет на указанный Email ссылку для востановления пароля."""
 
         serializer = self.get_serializer(data=request.data)
@@ -186,7 +186,7 @@ class ResetPasswordConfirm(generics.GenericAPIView):
     permission_classes = [AllowAny]
 
     @extend_schema(operation_id="Reset password confirm")
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         """
         Принимает идентификатор пользователя, токен подтверждения и новый пароль.
         Возвращает сообщение о результате запроса.
