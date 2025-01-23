@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "corsheaders",
     # created
-    # "users",
+    "users",
     # "board",
 ]
 
@@ -117,7 +117,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Модель пользователя
-# AUTH_USER_MODEL = "users.User"
+AUTH_USER_MODEL = "users.User"
 
 # Настройки rest_framework
 REST_FRAMEWORK = {
