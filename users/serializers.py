@@ -1,14 +1,26 @@
 from rest_framework import serializers
 
+from board.serializers import AdSerializer, CommentSerializer
 from users import models, utils
 
 
 class UserListSerializer(serializers.ModelSerializer):
     """Сериализатор списка пользователей."""
 
+    ads_count = serializers.SerializerMethodField()
+    comments_count = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_ads_count(user) -> int:
+        return int(user.ads.count())
+
+    @staticmethod
+    def get_comments_count(user) -> int:
+        return int(user.comments.count())
+
     class Meta:
         model = models.User
-        fields = ("id", "username", "email", "phone", "city", "role")
+        fields = ("id", "ads_count", "comments_count", "username", "email", "phone", "city", "role")
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -33,6 +45,9 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     """Сериализатор профиля пользователя."""
+
+    ads = AdSerializer(many=True, read_only=True)
+    comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.User
