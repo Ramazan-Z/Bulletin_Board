@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import AccessToken, TokenError
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from users import models, serializers, tasks
+from users import models, serializers, services
 from users.permissions import IsAdminUser, IsOwnerUser
 
 
@@ -42,7 +42,7 @@ class UserRegister(generics.CreateAPIView):
         user = serializer.save(is_active=False)
         token = AccessToken.for_user(user)
         waiting_confirm = models.WaitingConfirmEmail.objects.create(user=user, token=token)
-        tasks.send_verify_email(self.request, waiting_confirm)
+        services.send_verify_email(self.request, waiting_confirm)
 
 
 @extend_schema_view(get=extend_schema(operation_id="User profile"))
@@ -79,8 +79,10 @@ class UserUpdate(generics.UpdateAPIView):
             user.save()
         if email and email != user.email:
             token = AccessToken.for_user(user)
-            waiting_confirm = models.WaitingConfirmEmail.objects.create(user=user, token=token, new_email=email)
-            tasks.send_verify_email(self.request, waiting_confirm)
+            waiting_confirm, _ = models.WaitingConfirmEmail.objects.update_or_create(
+                user=user, defaults={"token": token, "new_email": email}
+            )
+            services.send_verify_email(self.request, waiting_confirm)
 
 
 @extend_schema_view(delete=extend_schema(operation_id="User delete"))
@@ -174,7 +176,7 @@ class ResetPassword(generics.GenericAPIView):
 
         user = get_object_or_404(models.User, email=serializer.validated_data.get("email"))
         token = AccessToken.for_user(user)
-        tasks.send_reset_password_link(request, user, token)
+        services.send_reset_password_info(request, user, token)
 
         return response.Response({"result": "The link was sent to the specified email."})
 
@@ -205,6 +207,9 @@ class ResetPasswordConfirm(generics.GenericAPIView):
             user.is_active = True  # Возможность активации через сброс пароля
             user.set_password(new_password)
             user.save()
+            waiting_confirm = models.WaitingConfirmEmail.objects.filter(user=user)
+            if waiting_confirm:
+                waiting_confirm.delete()
             return response.Response({"result": "Password changed successfully"})
         except TokenError as e:
             return response.Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
