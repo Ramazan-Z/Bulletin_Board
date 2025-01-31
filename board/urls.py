@@ -17,4 +17,6 @@ urlpatterns = [
     path("retrieve_comments/<int:pk>/", views.RetrieveComment.as_view(), name="retrieve_comments"),
     path("update_comments/<int:pk>/", views.UpdateComment.as_view(), name="update_comments"),
     path("delete_comments/<int:pk>/", views.DestroyComment.as_view(), name="delete_comments"),
+    # Contact between seller and buyer
+    path("send_message/<int:user_id>/<int:ad_id>/", views.SendMessage.as_view(), name="send_message"),
 ]

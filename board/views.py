@@ -1,9 +1,11 @@
+from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from rest_framework import generics
+from rest_framework import generics, response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from board import filters, models, paginators, serializers
+from board import filters, models, paginators, serializers, services
 from board.permissions import IsAuthorUser
+from users.models import User
 from users.permissions import IsAdminUser
 
 
@@ -73,8 +75,8 @@ class ListComments(generics.ListAPIView):
     queryset = models.Comment.objects.all()
     serializer_class = serializers.CommentSerializer
     filterset_fields = ("author", "ad")
-    ordering_fields = ("create_at",)
-    search_fields = ("text", "description")
+    ordering_fields = ("created_at",)
+    search_fields = ("text",)
 
 
 @extend_schema_view(post=extend_schema(operation_id="Leave a review"))
@@ -115,3 +117,26 @@ class DestroyComment(generics.DestroyAPIView):
     queryset = models.Comment.objects.all()
     serializer_class = serializers.CommentSerializer
     permission_classes = [IsAuthenticated, IsAuthorUser | IsAdminUser]
+
+
+@extend_schema_view(post=extend_schema(operation_id="Send message"))
+class SendMessage(generics.GenericAPIView):
+    """Связь между продавцом и покупателем с сохранением конфиденциальности."""
+
+    queryset = User.objects.filter(is_superuser=False)
+    serializer_class = serializers.SendMessageSerializer
+    lookup_url_kwarg = "user_id"
+
+    def get_serializer_context(self):
+        return {
+            "request": self.request,
+            "recipient": self.get_object(),
+            "ad": get_object_or_404(models.Advertisement, pk=self.kwargs.get("ad_id")),
+        }
+
+    def post(self, request, *args, **kwargs):
+        """Отправляет сообщение пользователю, как отклик на объявление или отзыв."""
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        services.send_message(serializer)
+        return response.Response(serializer.data)

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from board import models
+from board import models, validators
 
 
 class AdsListSerializer(serializers.ModelSerializer):
@@ -42,4 +42,21 @@ class AdRetrieveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Advertisement
+        fields = "__all__"
+
+
+class SendMessageSerializer(serializers.Serializer):
+    """Сериализатор отправки сообщений."""
+
+    result = serializers.SerializerMethodField(label="Information about the result of the request.")
+    message = serializers.CharField(write_only=True, label="Message for the recipient.")
+
+    @staticmethod
+    def get_result(data):
+        return "Your message has been sent."
+
+    def get_validators(self):
+        return [validators.OnlySelfAdValidator(self.context)]
+
+    class Meta:
         fields = "__all__"
