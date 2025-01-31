@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
+from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 
 from images import models, serializers
@@ -38,8 +39,9 @@ class ImagesViewSet(viewsets.ModelViewSet):
 
     queryset = models.Image.objects.all()
     serializer_class = serializers.ImageSerializer
-    filter_backends = (DjangoFilterBackend,)
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
     filterset_fields = ("ad",)
+    ordering_fields = ("ad",)
 
     def get_permissions(self):
         """Права доступа в зависимости от действия"""
