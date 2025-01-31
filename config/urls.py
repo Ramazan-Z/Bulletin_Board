@@ -11,6 +11,7 @@ urlpatterns = [
     path("admin/", admin.site.urls, name="admin"),
     path("users/", include("users.urls", namespace="users")),
     path("board/", include("board.urls", namespace="board")),
+    path("images/", include("images.urls", namespace="images")),
 ]
 
 if settings.DEBUG:

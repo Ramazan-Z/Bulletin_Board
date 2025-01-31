@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     # created
     "users",
     "board",
+    "images",
 ]
 
 MIDDLEWARE = [
