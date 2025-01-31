@@ -1,10 +1,13 @@
 from rest_framework import serializers
 
-from images import models
+from images import models, validators
 
 
 class ImageSerializer(serializers.ModelSerializer):
     """Сериализатор изображений товаров."""
+
+    def get_validators(self):
+        return [validators.ImageValidator(self.context)]
 
     class Meta:
         model = models.Image

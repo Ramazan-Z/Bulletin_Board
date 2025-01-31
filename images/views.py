@@ -1,8 +1,11 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 
 from images import models, serializers
+from images.permissions import IsOwnerImage
+from users.permissions import IsAdminUser
 
 
 @extend_schema_view(
@@ -37,3 +40,11 @@ class ImagesViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ImageSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ("ad",)
+
+    def get_permissions(self):
+        """Права доступа в зависимости от действия"""
+        if self.action in ("update", "partial_update"):
+            self.permission_classes = [IsAuthenticated, IsOwnerImage]
+        if self.action == "destroy":
+            self.permission_classes = [IsAuthenticated, IsOwnerImage | IsAdminUser]
+        return super().get_permissions()
