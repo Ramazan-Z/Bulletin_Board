@@ -1,0 +1,68 @@
+[
+{
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$dx7S4VcJFSwQ3ZShTZypaQ$vJhIpQroFkUU9/6CYU184nClI9aTJPW5Gwxr+1K7d6o=",
+        "last_login": "2025-02-01T03:29:47Z",
+        "is_superuser": false,
+        "username": "Alisa",
+        "first_name": "Алиса",
+        "last_name": "Захарова",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-02-01T03:23:41Z",
+        "email": "zaharova@sky.pro",
+        "phone": null,
+        "city": "Москва",
+        "avatar": "users/avatars/Alisa.jpg",
+        "role": "user",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$WyoGGNvooWBM25JglMBZ4P$5CRvccUAI625hktQ8M85N7eNO+ZUxpsdmj8r2vPjVaE=",
+        "last_login": "2025-02-01T03:35:15Z",
+        "is_superuser": false,
+        "username": "Timur",
+        "first_name": "Тимур",
+        "last_name": "Волков",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-02-01T03:25:19Z",
+        "email": "volkov@sky.pro",
+        "phone": null,
+        "city": "Воронеж",
+        "avatar": "users/avatars/Timur.jpg",
+        "role": "user",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$xiscudrs18pX3MAXfu3pFH$4mxltVPOkjXh64CS/biwCch4L885CpLlM+l2vqHZTBk=",
+        "last_login": "2025-02-01T03:39:18Z",
+        "is_superuser": false,
+        "username": "Sergey",
+        "first_name": "Сегей",
+        "last_name": "Зубков",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-02-01T03:27:46Z",
+        "email": "zubkov@sky.pro",
+        "phone": null,
+        "city": "Екатеринбург",
+        "avatar": "users/avatars/Sergey.jpg",
+        "role": "user",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]

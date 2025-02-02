@@ -59,7 +59,7 @@ class SendMessageSerializer(serializers.Serializer):
     message = serializers.CharField(write_only=True, label="Message for the recipient.")
 
     @staticmethod
-    def get_result(data):
+    def get_result(data) -> str:
         return "Your message has been sent."
 
     def get_validators(self):
