@@ -19,11 +19,10 @@ jobs:
               run: |
                   poetry lock
                   poetry install --no-root
-                  poetry shell
             - name: Run Flake8
-              run: flake8 .
+              run: poetry run flake8 .
             - name: Run Mypy
-              run: mypy .
+              run: poetry run mypy .
 
     tests:
         runs-on: ubuntu-latest
@@ -49,7 +48,7 @@ jobs:
                   envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
                   fail_on_empty: true
             - name: Run tests
-              run: pytest --cov
+              run: poetry run pytest --cov
               
 
     deploy:
