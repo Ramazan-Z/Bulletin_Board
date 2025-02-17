@@ -1,0 +1,66 @@
+[
+{
+    "model": "images.image",
+    "pk": 1,
+    "fields": {
+        "image": "images/flat.jpg",
+        "ad": 1
+    }
+},
+{
+    "model": "images.image",
+    "pk": 2,
+    "fields": {
+        "image": "images/sofa.jpeg",
+        "ad": 2
+    }
+},
+{
+    "model": "images.image",
+    "pk": 3,
+    "fields": {
+        "image": "images/table.jpeg",
+        "ad": 3
+    }
+},
+{
+    "model": "images.image",
+    "pk": 4,
+    "fields": {
+        "image": "images/quad_bike.jpg",
+        "ad": 4
+    }
+},
+{
+    "model": "images.image",
+    "pk": 5,
+    "fields": {
+        "image": "images/wheels.jpg",
+        "ad": 5
+    }
+},
+{
+    "model": "images.image",
+    "pk": 6,
+    "fields": {
+        "image": "images/garage.jpg",
+        "ad": 6
+    }
+},
+{
+    "model": "images.image",
+    "pk": 7,
+    "fields": {
+        "image": "images/iPhone.jpg",
+        "ad": 7
+    }
+},
+{
+    "model": "images.image",
+    "pk": 8,
+    "fields": {
+        "image": "images/laptop.jpg",
+        "ad": 8
+    }
+}
+]
